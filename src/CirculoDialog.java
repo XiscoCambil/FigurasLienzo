@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -70,10 +72,12 @@ public class CirculoDialog extends JDialog {
     private void onPintar() {
         // add your code here
         try {
-            ObtenerValores();
+            Map map = ObtenerValores();
             if((x < 550 && x > 50) && (y < 550 && y > 50)){
-                Punto p = new Punto(x,y);
-                Forma f = new Circulo(p,radio,color, rellenar);
+                //Punto p = new Punto(x,y);
+                //Forma f = new Circulo(p,radio,color, rellenar);
+                Forma f = FiguraCache.getInstance().getCopiaForma("circulo");
+                f.fillAttributes(map);
                 Main.listaFormas.add(f);
                 Main.friendLienzo.getContentPane().repaint();
                 Main.friendLienzo.getContentPane().setVisible(true);
@@ -83,6 +87,8 @@ public class CirculoDialog extends JDialog {
             }
         }catch (NumberFormatException n){
             JOptionPane.showMessageDialog(null, "Los valores no son correctos");
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
 
     }
@@ -115,7 +121,25 @@ public class CirculoDialog extends JDialog {
 
     }
 
-    private void ObtenerValores() {
+    private Map ObtenerValores() {
+        respuesta = resRellenar.getSelectedItem().toString();
+        x = Integer.parseInt(xValue.getText());
+        y = Integer.parseInt(yValue.getText());
+        radio = Integer.parseInt(radioValue.getText());
+        color = (Color) colores.getSelectedItem();
+        Map<String,Object> map = new HashMap<>();
+        map.put("x",x);
+        map.put("y",y);
+        map.put("color",color);
+        map.put("radio",radio);
+        map.put("rellenar", Objects.equals(respuesta, "Si"));
+        return map;
+    }
+        /*
+    private Map ObtenerValores() {
+        Map<String,Object> map = new HashMap<>();
+        map.put("x",x);
+        map.put("y",y)
         x = Integer.parseInt(xValue.getText());
         y = Integer.parseInt(yValue.getText());
         radio = Integer.parseInt(radioValue.getText());
@@ -124,6 +148,8 @@ public class CirculoDialog extends JDialog {
         rellenar = Objects.equals(respuesta, "Si");
 
     }
+    */
+
 
 
 }

@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Clase PuntoDialog creada para obtener los datos necesarios a traves de los textFilds y jcombox.
  */
@@ -60,10 +63,10 @@ public class PuntoDialog extends JDialog {
     private void onPintar() {
         // add your code here
         try {
-            ObtenerValores();
-            Forma f = new Punto(x, y);
-            f.setColor(color);
+            Map map = ObtenerValores();
             if ((x < 550 && x > 50) && (y > 50 && y < 550)) {
+                Forma f = FiguraCache.getInstance().getCopiaForma("punto");
+                f.fillAttributes(map);
                 Main.listaFormas.add(f);
                 Main.friendLienzo.getContentPane().repaint();
                 Main.friendLienzo.getContentPane().setVisible(true);
@@ -74,6 +77,8 @@ public class PuntoDialog extends JDialog {
             }
         }catch (NumberFormatException n) {
             JOptionPane.showMessageDialog(null, "Los valores no son correctos");
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -85,9 +90,14 @@ public class PuntoDialog extends JDialog {
     }
 
 
-    private void ObtenerValores() {
+    private Map ObtenerValores() {
         x = Integer.parseInt(xValue.getText());
         y = Integer.parseInt(yValue.getText());
+        Map<String,Object> map = new HashMap<>();
+        map.put("x",x);
+        map.put("y",y);
+        map.put("color", Color.black);
+        return map;
     }
 
 }

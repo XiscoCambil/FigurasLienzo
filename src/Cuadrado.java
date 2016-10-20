@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by blackwidow on 6/10/16.
@@ -12,12 +13,22 @@ import java.awt.*;
  */
 public class Cuadrado extends Area {
 
+    public Cuadrado(){};
+
     public Cuadrado(Punto punto, int radio, Color color, boolean respuesta){
         setColor(color);
         setWidth(radio);
         setHeight(radio);
         setRellenar(respuesta);
         setPunto(punto);
+    }
+
+    @Override
+    public void fillAttributes(Map<String,Object> map) {
+        super.fillAttributes(map);
+        setWidth((Integer) map.get("radio"));
+        setHeight((Integer) map.get("radio"));
+        setRellenar((Boolean) map.get("rellenar"));
     }
     /**
      * @param g

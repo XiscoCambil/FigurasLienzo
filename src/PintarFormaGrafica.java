@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by blackwidow on 6/10/16.
@@ -13,4 +14,6 @@ public interface PintarFormaGrafica {
      *
      */
     void pintarForma(Graphics g);
+
+    void fillAttributes(Map<String,Object> map);
 }

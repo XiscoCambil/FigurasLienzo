@@ -3,6 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.text.AttributedCharacterIterator;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Clase TextoDialog creada para obtener los datos necesarios a traves de los textFilds y jcombox.
  */
@@ -87,12 +90,25 @@ public class TextoDialog extends JDialog {
         dispose();
     }
 
-
+/*
     private void ObtenerValores() {
         texto = text.getText();
         x = Integer.parseInt(xValue.getText());
         y = Integer.parseInt(yValue.getText());
         color = (Color) colores.getSelectedItem();
+    }
+*/
+    private Map ObtenerValores() {
+        texto = text.getText();
+        x = Integer.parseInt(xValue.getText());
+        y = Integer.parseInt(yValue.getText());
+        color = (Color) colores.getSelectedItem();
+        Map<String, Object> map = new HashMap<>();
+        map.put("texto",texto);
+        map.put("x",x);
+        map.put("y",y);
+        map.put("color",color);
+        return map;
     }
 
     private void CreateComboColor(JComboBox comboBox) throws SQLException {

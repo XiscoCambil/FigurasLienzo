@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 /**
  * Clase CuadradoDialog creada para obtener los datos necesarios a traves de los textFilds y jcombox.
@@ -20,6 +22,7 @@ public class CuadradoDialog extends JDialog {
     private int x,y,radio;
     private Color color;
     private boolean rellenar;
+    private String respuesta;
 
     public CuadradoDialog(JFrame parent) throws SQLException {
         super(parent);
@@ -68,10 +71,12 @@ public class CuadradoDialog extends JDialog {
     private void onPintar() {
         // add your code here
         try {
-            ObtenerValores();
+            Map map = ObtenerValores();
             if((x < 550 && x > 50) && (y < 550 && y > 50)){
-                Punto p = new Punto(x,y);
-                Forma f = new Cuadrado(p,radio,color, rellenar);
+               // Punto p = new Punto(x,y);
+               // Forma f = new Cuadrado(p,radio,color, rellenar);
+                Forma f = FiguraCache.getInstance().getCopiaForma("cuadrado");
+                f.fillAttributes(map);
                 Main.listaFormas.add(f);
                 Main.friendLienzo.getContentPane().repaint();
                 Main.friendLienzo.getContentPane().setVisible(true);
@@ -81,6 +86,8 @@ public class CuadradoDialog extends JDialog {
             }
         }catch (NumberFormatException n){
             JOptionPane.showMessageDialog(null, "Los valores no son correctos");
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -111,12 +118,28 @@ public class CuadradoDialog extends JDialog {
 
     }
 
-    private void ObtenerValores() {
+    private Map ObtenerValores() {
         x = Integer.parseInt(xValue.getText());
         y = Integer.parseInt(yValue.getText());
         radio = Integer.parseInt(lado.getText());
         color = (Color) colores.getSelectedItem();
-        String respuesta = (String) resRellenar.getSelectedItem();
+        respuesta = (String) resRellenar.getSelectedItem();
+        Map<String,Object> map = new HashMap<>();
+        map.put("x",x);
+        map.put("y",y);
+        map.put("color",color);
+        map.put("radio",radio);
+        map.put("rellenar", Objects.equals(respuesta, "Si"));
+        return map;
+    }
+    /*
+    private void ObtenerValores() {
+         x = Integer.parseInt(xValue.getText());
+        y = Integer.parseInt(yValue.getText());
+        radio = Integer.parseInt(lado.getText());
+        color = (Color) colores.getSelectedItem();
+        respuesta = (String) resRellenar.getSelectedItem();
         rellenar = Objects.equals(respuesta, "Si");
     }
+    */
     }

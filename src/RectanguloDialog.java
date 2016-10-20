@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 /**
  * Clase RectanguloDialog creada para obtener los datos necesarios a traves de los textFilds y jcombox.
@@ -20,6 +22,7 @@ public class RectanguloDialog extends JDialog {
     private int x,y,heigth,width;
     private boolean rellenar;
     private Color color;
+    private String respuesta;
 
 
     public RectanguloDialog(JFrame parent) throws SQLException {
@@ -70,13 +73,15 @@ public class RectanguloDialog extends JDialog {
     private void onPintar() {
         // add your code here
         try{
-            ObtenerValores();
+           Map map = ObtenerValores();
             if (heigth == width) {
                 JOptionPane.showMessageDialog(null, "Esto son las medidas de un cuadrado no de un Rectangulo");
             } else {
                 if ((x < 550 && x > 50) && (y < 550 && y > 50)) {
-                    Punto p = new Punto(x,y);
-                    Forma f = new Rectangulo(p, width, heigth, color, rellenar);
+                    //Punto p = new Punto(x,y);
+                    //Forma f = new Rectangulo(p, width, heigth, color, rellenar);
+                    Forma f = FiguraCache.getInstance().getCopiaForma("rectangulo");
+                    f.fillAttributes(map);
                     Main.listaFormas.add(f);
                     Main.friendLienzo.getContentPane().repaint();
                     Main.friendLienzo.getContentPane().setVisible(true);
@@ -87,6 +92,8 @@ public class RectanguloDialog extends JDialog {
             }
         }catch (NumberFormatException n) {
             JOptionPane.showMessageDialog(null, "Los valores no son correctos");
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -117,7 +124,7 @@ public class RectanguloDialog extends JDialog {
 
     }
 
-    private void ObtenerValores() {
+    /*private void ObtenerValores() {
         x = Integer.parseInt(xValue.getText());
         y = Integer.parseInt(yValue.getText());
         width = Integer.parseInt(widthValue.getText());
@@ -125,6 +132,23 @@ public class RectanguloDialog extends JDialog {
         color = (Color) colores.getSelectedItem();
         String respuesta = (String) resRellenar.getSelectedItem();
         rellenar = Objects.equals(respuesta, "Si");
+    }*/
+
+    private Map ObtenerValores() {
+        respuesta = resRellenar.getSelectedItem().toString();
+        x = Integer.parseInt(xValue.getText());
+        y = Integer.parseInt(yValue.getText());
+        width = Integer.parseInt(widthValue.getText());
+        heigth = Integer.parseInt(heigthValue.getText());
+        color = (Color) colores.getSelectedItem();
+        Map<String,Object> map = new HashMap<>();
+        map.put("x",x);
+        map.put("y",y);
+        map.put("color",color);
+        map.put("width",width);
+        map.put("height",heigth);
+        map.put("rellenar", Objects.equals(respuesta, "Si"));
+        return map;
     }
 
 

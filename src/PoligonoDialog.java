@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 /**
  * Clase CirculoDialog creada para obtener los datos necesarios a traves de los textFilds y jcombox.
@@ -22,8 +24,10 @@ public class PoligonoDialog extends JDialog {
 
     private int puntas;
     private Punto punto1,punto2,punto3;
+    private int x,x2,x3,y,y2,y3;
     private Color color;
     private boolean rellenar;
+    private String respuesta;
 
     public PoligonoDialog(JFrame parent) throws SQLException {
         super(parent);
@@ -71,12 +75,13 @@ public class PoligonoDialog extends JDialog {
      *
      */
     private void onPintar() {
+        Map map = ObtenerValores();
         try{
-            ObtenerValores();
-            if((punto1.getX() < 550 && punto1.getX() > 50) && (punto1.getY() < 550 && punto1.getY() > 50) &&
-                 (punto2.getX() < 550 && punto2.getX() > 50) && (punto2.getY() < 550 && punto2.getY() > 50) &&
-                    (punto3.getX() < 550 && punto3.getX() > 50) && (punto3.getY() < 550 && punto3.getY() > 50)){
-                Forma f = new Poligono(punto1,punto2,punto3,puntas,color, rellenar);
+            if((x < 550 && x > 50) && (y < 550 && y > 50) &&
+                 (x2 < 550 && x2 > 50) && (y2 < 550 && y2 > 50) &&
+                    (x3 < 550 && x3 > 50) && (y3 < 550 && y3 > 50)){
+                Forma f = FiguraCache.getInstance().getCopiaForma("poligono");
+                f.fillAttributes(map);
                 Main.listaFormas.add(f);
                 Main.friendLienzo.getContentPane().repaint();
                 Main.friendLienzo.getContentPane().setVisible(true);
@@ -86,6 +91,8 @@ public class PoligonoDialog extends JDialog {
             }
         }catch (NumberFormatException n){
             JOptionPane.showMessageDialog(null, "Los valores no son correctos");
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -114,6 +121,7 @@ public class PoligonoDialog extends JDialog {
         comboBox.setVisible(true);
     }
 
+    /*
     private void ObtenerValores() {
         punto1 = new Punto(Integer.parseInt(xValue.getText()),Integer.parseInt(yValue.getText()));
         punto2 = new Punto(Integer.parseInt(x2Value.getText()),Integer.parseInt(y2Value.getText()));
@@ -124,5 +132,29 @@ public class PoligonoDialog extends JDialog {
         rellenar = Objects.equals(respuesta, "Si");
 
     }
+       */
 
+    private Map ObtenerValores() {
+        respuesta = (String) resRellenar.getSelectedItem();
+        x = Integer.parseInt(xValue.getText());
+        y = Integer.parseInt(yValue.getText());
+        x2 = Integer.parseInt(x2Value.getText());
+        y2 = Integer.parseInt(y2Value.getText());
+        x3 = Integer.parseInt(x3Value.getText());
+        y3 = Integer.parseInt(y3Value.getText());
+        puntas = Integer.parseInt(nPuntas.getText());
+        color = (Color) colores.getSelectedItem();
+        rellenar = Objects.equals(respuesta, "Si");
+        Map<String,Object> map = new HashMap<>();
+        map.put("x",x);
+        map.put("y",y);
+        map.put("x2",x2);
+        map.put("y2",y2);
+        map.put("x3",x3);
+        map.put("y3",y3);
+        map.put("color",color);
+        map.put("npuntas",puntas);
+        map.put("rellenar",rellenar);
+        return map;
+    }
 }

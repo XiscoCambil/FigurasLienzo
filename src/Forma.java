@@ -9,7 +9,7 @@ import java.util.*;
  * se definen las variables usadas en todos los tipos de formas. Implementa la interfaz
  * PintarFormaGrafica para que cada forma este obligada a implementarla.
  */
-public abstract class Forma implements PintarFormaGrafica {
+public abstract class Forma implements PintarFormaGrafica,Cloneable {
 
     private Color color = Color.black;
     private Punto punto;
@@ -38,6 +38,16 @@ public abstract class Forma implements PintarFormaGrafica {
     public void pintarForma(Graphics g){
 
     }
+
+    public Forma clone() throws CloneNotSupportedException {
+        return (Forma) super.clone();
+    }
+
+    public void fillAttributes(Map<String,Object> map){
+        setColor((Color) map.get("color"));
+        setPunto(new Punto((Integer) map.get("x"),(Integer) map.get("y")));
+    }
+
 }
 
 

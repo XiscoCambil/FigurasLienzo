@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by blackwidow on 6/10/16.
@@ -15,6 +16,14 @@ public class Punto extends Forma{
     public Punto(int x, int y){
         this.x = x;
         this.y = y;
+    }
+
+    public Punto(){}
+
+    public void fillAttributes(Map<String,Object> map) {
+        this.x = (int) map.get("x");
+        this.y = (int) map.get("y");
+
     }
 
     public int getY() {

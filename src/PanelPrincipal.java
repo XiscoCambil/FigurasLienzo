@@ -25,6 +25,7 @@ public class PanelPrincipal {
      * y se panel dentro. A parte de añadir todos los eventos a los botnes que formaran parte del menu.
      */
     public PanelPrincipal(){
+        FiguraCache.getInstance();
         frame.setContentPane(panel);
         frame.setSize(500,500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

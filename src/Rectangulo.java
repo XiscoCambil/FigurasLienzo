@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.Map;
+
 /**
  * Created by blackwidow on 6/10/16.
  * @author Xisco Cambil Reynes
@@ -14,6 +16,16 @@ public class Rectangulo extends Area{
        setRellenar(respuesta);
        setPunto(punto);
    }
+
+   public Rectangulo(){}
+
+    @Override
+    public void fillAttributes(Map<String,Object> map) {
+        super.fillAttributes(map);
+        setWidth((Integer) map.get("width"));
+        setHeight((Integer) map.get("height"));
+        setRellenar((Boolean) map.get("rellenar"));
+    }
     /**
      * @param g
      * metodo utilizado para pintar la forma grafica en el lienzo.

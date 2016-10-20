@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by blackwidow on 6/10/16.
@@ -17,6 +18,14 @@ public class Linea extends Forma implements PintarFormaGrafica{
         setColor(color);
         setPunto(punto1);
         this.punto2 = punto2;
+    }
+
+    public Linea(){}
+
+    @Override
+    public void fillAttributes(Map<String,Object> map) {
+        super.fillAttributes(map);
+        punto2 = new Punto((Integer) map.get("x2"),(Integer) map.get("y2"));
     }
 
     /**

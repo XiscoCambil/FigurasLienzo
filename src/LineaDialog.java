@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Clase LineaDialog creada para obtener los datos necesarios a traves de los textFilds y jcombox.
  */
@@ -66,11 +69,13 @@ public class LineaDialog extends JDialog {
     private void onPintar() {
         // add your code here
         try{
-            ObtenerValores();
+            Map map = ObtenerValores();
             if((x < 550 && x > 50) && (y > 50 && y < 550) && (y2 > 50 && y2 < 550) && (x2 > 50 && x2 < 550)){
-                Punto punto1 = new Punto(x, y);
-                Punto punto2 = new Punto(x2, y2);
-                Forma f = new Linea(punto1, punto2,color);
+                //Punto punto1 = new Punto(x, y);
+                //Punto punto2 = new Punto(x2, y2);
+                //Forma f = new Linea(punto1, punto2,color);
+                Forma f = FiguraCache.getInstance().getCopiaForma("linea");
+                f.fillAttributes(map);
                 Main.listaFormas.add(f);
                 Main.friendLienzo.getContentPane().repaint();
                 Main.friendLienzo.getContentPane().setVisible(true);
@@ -80,6 +85,8 @@ public class LineaDialog extends JDialog {
             }
         }catch (NumberFormatException n){
                 JOptionPane.showMessageDialog(null, "Los valores no son correctos");
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -101,11 +108,18 @@ public class LineaDialog extends JDialog {
         comboBox.setVisible(true);
     }
 
-    private void ObtenerValores() {
+    private Map ObtenerValores() {
         x = Integer.parseInt(xValue.getText());
         x2 = Integer.parseInt(x2Value.getText());
         y = Integer.parseInt(yValue.getText());
         y2 = Integer.parseInt(y2Value.getText());
         color = (Color) colores.getSelectedItem();
+        Map<String,Object> map= new HashMap<>();
+        map.put("x",x);
+        map.put("y",y);
+        map.put("x2",x2);
+        map.put("y2",y2);
+        map.put("color",color);
+        return map;
     }
 }

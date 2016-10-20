@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by blackwidow on 6/10/16.
@@ -15,6 +16,14 @@ public class Texto extends Forma{
         this.texto = texto;
         setPunto(punto);
         setColor(color);
+    }
+
+    public Texto(){}
+
+    @Override
+    public void fillAttributes(Map<String,Object> map) {
+        super.fillAttributes(map);
+        this.texto = (String) map.get("texto");
     }
 
     public String getTexto() {

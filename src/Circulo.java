@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Created by blackwidow on 6/10/16.
@@ -16,6 +17,10 @@ public class Circulo extends Area{
         setPunto(punto);
     }
 
+    public Circulo(){}
+
+
+
     /**
      *
      * @param g
@@ -24,6 +29,14 @@ public class Circulo extends Area{
     @Override
     public void pintarForma(Graphics g) {
         Rellenar(isRellenar(),g);
+    }
+
+    @Override
+    public void fillAttributes(Map<String,Object> map) {
+        super.fillAttributes(map);
+        setWidth((Integer) map.get("radio"));
+        setHeight((Integer) map.get("radio"));
+        setRellenar((Boolean) map.get("rellenar"));
     }
 
     /**
@@ -43,4 +56,5 @@ public class Circulo extends Area{
             g.drawOval(getPunto().getX(), getPunto().getY(), getWidth(), getHeight());
         }
     }
+
 }
